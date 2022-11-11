@@ -19,6 +19,7 @@ const run=async()=>{
  try{
 
  const servicesCollection = client.db('dr-Josef-project').collection('services');
+ const reviewCollection = client.db('dr-Josef-project').collection('review');
  
 app.get('/home',async(req,res)=>{
     const query = {};
@@ -41,6 +42,32 @@ app.get('/services/:id',async(req,res)=>{
     res.send(service);
 
 })
+
+app.post('/addService',async(req,res)=>{
+  const service = req.body;
+  const result = await servicesCollection.insertOne(service) 
+  console.log(service)
+  res.send(result);
+})
+
+
+app.get('/reviews',async(req,res)=>{
+    const query = {};
+    const cursor = reviewCollection.find(query);
+    const reviews = await cursor.toArray();
+    res.send(reviews);
+})
+
+app.post('/reviews',async(req,res)=>{
+ 
+    const review = req.body;
+    console.log(review)
+     const result = await reviewCollection.insertOne(review)
+
+     res.send(result);
+})
+
+
 
  }
  finally{
